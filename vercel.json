@@ -4,6 +4,10 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
+  "env": {
+    "VITE_SUPABASE_URL": "https://demo-mode.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "demo-key-for-vercel"
+  },
   "rewrites": [
     {
       "source": "/(.*)",
@@ -21,6 +25,15 @@
       ]
     },
     {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
@@ -34,6 +47,10 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     }

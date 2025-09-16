@@ -1,13 +1,41 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+// Configuración con fallback para demo
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://demo.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-key'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
+// Crear cliente con configuración segura
+let supabase: any = null;
+
+try {
+  // Solo crear cliente real si tenemos las variables de entorno correctas
+  if (supabaseUrl !== 'https://demo.supabase.co' && supabaseAnonKey !== 'demo-key') {
+    supabase = createClient(supabaseUrl, supabaseAnonKey)
+  } else {
+    // Modo demo - cliente mock
+    console.warn('🔄 Ejecutando en modo DEMO - Supabase no configurado')
+    supabase = {
+      from: () => ({
+        select: () => ({ data: [], error: null }),
+        insert: () => ({ data: null, error: 'Demo mode - no database operations' }),
+        update: () => ({ data: null, error: 'Demo mode - no database operations' }),
+        delete: () => ({ data: null, error: 'Demo mode - no database operations' })
+      })
+    }
+  }
+} catch (error) {
+  console.warn('⚠️ Error conectando Supabase, usando modo demo')
+  supabase = {
+    from: () => ({
+      select: () => ({ data: [], error: null }),
+      insert: () => ({ data: null, error: 'Demo mode - no database operations' }),
+      update: () => ({ data: null, error: 'Demo mode - no database operations' }),
+      delete: () => ({ data: null, error: 'Demo mode - no database operations' })
+    })
+  }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export { supabase }
 
 // Tipos para TypeScript
 export interface Profile {

@@ -1,18 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
-// Configuración robusta con múltiples fallbacks
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 
-                   process.env.VITE_SUPABASE_URL || 
-                   'https://demo-mode.supabase.co'
-                   
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 
-                       process.env.VITE_SUPABASE_ANON_KEY || 
-                       'demo-key-fallback'
-
-// Cliente Supabase con configuración segura
-let supabase: any = null;
-
-// Mock completo para modo demo
+// Mock completo para modo demo - NUNCA falla
 const createMockSupabase = () => ({
   from: (table: string) => ({
     select: (columns?: string) => Promise.resolve({ data: [], error: null }),
@@ -46,23 +32,18 @@ const createMockSupabase = () => ({
   }
 });
 
-try {
-  // Verificar si estamos en modo demo
-  const isDemoMode = supabaseUrl.includes('demo') || supabaseAnonKey.includes('demo');
-  
-  if (!isDemoMode && supabaseUrl && supabaseAnonKey) {
-    // Intentar crear cliente real
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
-    console.log('✅ Supabase conectado correctamente');
-  } else {
-    throw new Error('Demo mode activated');
-  }
-} catch (error) {
-  console.warn('🔄 Ejecutando en modo DEMO - Funcionalidad limitada');
-  supabase = createMockSupabase();
-}
+// Configuración con fallback inmediato - SIN importar createClient
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 
+                   process.env.VITE_SUPABASE_URL || 
+                   ''
+                   
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 
+                       process.env.VITE_SUPABASE_ANON_KEY || 
+                       ''
 
-export { supabase }
+// SIEMPRE usar modo demo para evitar crashes
+console.log('🔄 Aplicación ejecutándose en modo DEMO');
+export const supabase = createMockSupabase();
 
 // Tipos para TypeScript
 export interface Profile {

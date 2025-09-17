@@ -5,8 +5,8 @@
   "installCommand": "npm install",
   "framework": "vite",
   "env": {
-    "VITE_SUPABASE_URL": "https://demo-mode.supabase.co",
-    "VITE_SUPABASE_ANON_KEY": "demo-key-for-vercel"
+    "VITE_SUPABASE_URL": "https://rlmjliqxsgbdcokirnli.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsbWpsaXF4c2diZGNva2lybmxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5NzQ4MjMsImV4cCI6MjA3MzU1MDgyM30.mdnfLbdQZAzpRYDu1oeaspZvDjPgxP2mSE0VZ0I9RMo"
   },
   "rewrites": [
     {
